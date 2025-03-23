@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "Cortex"
+version = "0.1.0"
+description = "Cortex: A multiagent system using LangChain and Groq"
+authors = ["Romail Khan <rkhan307@gatech.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+langchain-groq = "^0.3.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
