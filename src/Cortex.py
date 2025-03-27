@@ -6,6 +6,10 @@ from agents.Emotion import Emotion
 from agents.Reasoning import Reasoning
 from agents.Language import Language
 from agents.Feedback import Feedback
+from langgraph.store.memory import InMemoryStore
+from langchain.embeddings import init_embeddings
+from uuid import uuid4
+import os
 
 class Cortex:
     def __init__(self):
@@ -16,6 +20,14 @@ class Cortex:
         self.language_agent = Language()
         self.feedback_agent = Feedback()
         self.reset_state()
+        
+        # Initialize memory system
+        self.memory = InMemoryStore(
+            index={
+            "embed": init_embeddings("openai:text-embedding-3-small", api_key=os.getenv("OPENAI_API_KEY")),
+            "dims": 1536
+            }
+        )
 
     def reset_state(self):
         self.current_state = {
@@ -27,8 +39,28 @@ class Cortex:
 
     def perception(self, query: str) -> Dict:
         self.current_state["initial_query"] = query
-        perception_output = self.perception_agent.analyze(query)
+        
+        namespace_for_memory = ("perception", "memories")
+        
+        memories = self.memory.search(
+            namespace_for_memory,
+            query = query,
+            limit=3
+            )
+        
+        perception_output = self.perception_agent.analyze(query, memories)
         self.current_state["agents"]["perception"] = perception_output
+        
+        print(perception_output)
+        
+        # Store the perception output in memory
+        self.memory.put(
+            key=str(uuid4()),
+            value=perception_output,
+            namespace=namespace_for_memory,
+            index="analysis"
+        )
+        
         return self.current_state
 
     def emotion(self, state: Dict) -> Dict:

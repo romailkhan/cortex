@@ -8,6 +8,7 @@ from agents.Feedback import Feedback
 from Cortex import Cortex
 
 cortex = Cortex()
+
 response = cortex.process_query("What's the weather like today?")
 print(response)
 
