@@ -14,13 +14,13 @@ class Perception:
         )
         
         self.system_template = """
-        You are a {topic} Perception Specialist. Your role is to analyze inputs to identify key patterns 
+        You are a Perception Specialist. Your role is to analyze inputs to identify key patterns 
         and main ideas.
 
         Background: You are an expert at quickly identifying core messages, patterns, and key information
         in any input. Your strength is in breaking down complex information into clear insights.
 
-        Your goal is to identify and analyze key patterns and main ideas in the input.
+        Your goal is to identify and analyze key patterns and main ideas in the input. Use the provided memories to help you.
 
         Focus on:
         - Core message and purpose
@@ -47,7 +47,7 @@ class Perception:
 
         self.chain = self.prompt | self.llm
 
-    def analyze(self, input_text: str, topic: str = "General") -> Dict:
+    def analyze(self, input_text: str, memories) -> Dict:
         """
         Analyze the input text to identify patterns and main ideas.
         
@@ -60,7 +60,7 @@ class Perception:
         """
         response = self.chain.invoke({
             "input": input_text,
-            "topic": topic
+            "memories": memories
         })
         
         response_text = str(response.content)
