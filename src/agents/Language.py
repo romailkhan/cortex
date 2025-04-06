@@ -33,10 +33,13 @@ class Language:
             "role": "Language Specialist",
             "analysis": {{
                 "semantic_interpretations": ["interpretation1", "interpretation2"],
-                "stylistic_patterns": ["pattern1", "pattern2"]
+                "stylistic_patterns": ["pattern1", "pattern2"],
+                "final_response": "final response to the user's query"
             }}
         }}
         Do not include any other text, thoughts, or explanations. The response must be pure JSON only.
+        
+        Finally, you must produce a final response to the user's query.
         """
 
         self.prompt = ChatPromptTemplate.from_messages([

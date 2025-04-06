@@ -9,7 +9,7 @@ from Cortex import Cortex
 
 cortex = Cortex()
 
-response = cortex.process_query("What's the weather like today?")
+response = cortex.process_query("A farmer has 17 sheep. All but 9 run away. Then, 3 of the remaining sheep are sold. How many sheep does the farmer have left?")
 print(response)
 
 # # Initialize agents

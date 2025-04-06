@@ -38,7 +38,7 @@ class Feedback:
         {{
             "role": "Feedback Specialist",
             "analysis": {{
-                "quality_score": 0.85,  # Must be between 0.0 and 1.0
+                "quality_score": 0.85,  # Must be between 0.0 and 1.0. Shows the quality and confidence of the analysis.
                 "gaps_identified": ["gap1", "gap2"],
                 "improvement_areas": ["area1", "area2"]
             }},
