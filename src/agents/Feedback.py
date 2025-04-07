@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 import os
@@ -15,7 +15,7 @@ class Feedback:
         
         self.system_template = """
         You are a {topic} Feedback Specialist. Your role is to evaluate all analyses 
-        and determine if refinement is needed.
+        and determine if refinement is needed. Use the provided memories to help inform your analysis.
 
         Background: You are skilled at evaluating quality, identifying gaps, and determining when
         work needs improvement. Your focus is on ensuring comprehensive and accurate results.
@@ -54,12 +54,13 @@ class Feedback:
 
         self.chain = self.prompt | self.llm
 
-    def analyze(self, input_text: str, topic: str = "General") -> Dict:
+    def analyze(self, input_text: str, memories: List[Dict], topic: str = "General") -> Dict:
         """
-        Evaluate the analyses and provide feedback.
+        Evaluate the analyses and provide feedback, informed by memories.
         
         Args:
             input_text (str): The text to analyze
+            memories (List[Dict]): Relevant past memories.
             topic (str): The specific topic area for analysis (defaults to "General")
             
         Returns:
@@ -67,6 +68,7 @@ class Feedback:
         """
         response = self.chain.invoke({
             "input": input_text,
+            "memories": memories,
             "topic": topic
         })
         

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 import os
@@ -15,7 +15,7 @@ class Language:
         
         self.system_template = """
         You are a {topic} Language Specialist. Your role is to analyze language usage 
-        and communication effectiveness.
+        and communication effectiveness. Use the provided memories to help inform your analysis.
 
         Background: You are an expert at understanding language patterns, meaning, and communication
         effectiveness across different contexts.
@@ -39,7 +39,7 @@ class Language:
         }}
         Do not include any other text, thoughts, or explanations. The response must be pure JSON only.
         
-        Finally, you must produce a final response to the user's query.
+        Finally, you must produce a final response to the user's query. If it is a math problem, you must solve it and provide the answer. If it is a code problem, you must solve it and provide the answer. If it is a general question, you must answer it based on the information provided.
         """
 
         self.prompt = ChatPromptTemplate.from_messages([
@@ -49,12 +49,13 @@ class Language:
 
         self.chain = self.prompt | self.llm
 
-    def analyze(self, input_text: str, topic: str = "General") -> Dict:
+    def analyze(self, input_text: str, memories: List[Dict], topic: str = "General") -> Dict:
         """
-        Analyze the language usage in the input text.
+        Analyze the language usage in the input text, informed by memories.
         
         Args:
             input_text (str): The text to analyze
+            memories (List[Dict]): Relevant past memories.
             topic (str): The specific topic area for analysis (defaults to "General")
             
         Returns:
@@ -62,6 +63,7 @@ class Language:
         """
         response = self.chain.invoke({
             "input": input_text,
+            "memories": memories,
             "topic": topic
         })
         
