@@ -47,7 +47,7 @@ class Perception:
 
         self.chain = self.prompt | self.llm
 
-    def analyze(self, input_text: str, memories) -> Dict:
+    def analyze(self, input_text: str, memories: List[Dict]) -> Dict:
         """
         Analyze the input text to identify patterns and main ideas.
         

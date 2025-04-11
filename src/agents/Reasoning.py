@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 import os
@@ -15,7 +15,7 @@ class Reasoning:
         
         self.system_template = """
         You are a {topic} Reasoning Specialist. Your role is to apply logical analysis 
-        and draw well-supported conclusions.
+        and draw well-supported conclusions. Use the provided memories to help inform your analysis.
 
         Background: You excel at logical analysis, finding connections between ideas, and drawing
         evidence-based conclusions.
@@ -26,7 +26,7 @@ class Reasoning:
         - Cause-effect relationships
         - Logical connections
         - Evidence evaluation
-        - Conclusions
+        - Conclusions to develop an answer to the query
 
         IMPORTANT: You must respond with ONLY valid JSON. Your entire response must be a single JSON object with exactly this structure:
         {{
@@ -47,12 +47,13 @@ class Reasoning:
 
         self.chain = self.prompt | self.llm
 
-    def analyze(self, input_text: str, topic: str = "General") -> Dict:
+    def analyze(self, input_text: str, memories: List[Dict], topic: str = "General") -> Dict:
         """
-        Apply logical analysis to the input text.
+        Apply logical analysis to the input text, informed by memories.
         
         Args:
             input_text (str): The text to analyze
+            memories (List[Dict]): Relevant past memories.
             topic (str): The specific topic area for analysis (defaults to "General")
             
         Returns:
@@ -60,6 +61,7 @@ class Reasoning:
         """
         response = self.chain.invoke({
             "input": input_text,
+            "memories": memories,
             "topic": topic
         })
         
