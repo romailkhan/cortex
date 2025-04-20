@@ -42,8 +42,6 @@ class Cortex:
 
     def reset_state(self):
         self.current_state = {
-            "timestamp": datetime.now().isoformat(),
-            "location": "Minneapolis, MN",
             "initial_query": None,
             "agents": {}
         }

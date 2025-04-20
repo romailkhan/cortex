@@ -34,12 +34,12 @@ class Language:
             "analysis": {{
                 "semantic_interpretations": ["interpretation1", "interpretation2"],
                 "stylistic_patterns": ["pattern1", "pattern2"],
-                "final_response": "final response to the user's query"
+                "final_response": "final response to the user's query" # important: you must have this field
             }}
         }}
         Do not include any other text, thoughts, or explanations. The response must be pure JSON only.
         
-        Finally, you must produce a final response to the user's query. If it is a math problem, you must solve it and provide the answer. If it is a code problem, you must solve it and provide the answer. If it is a general question, you must answer it based on the information provided.
+        Finally, you must produce a final response to the user's query. You will be given math problems. Only put the final number answer in the final_response field as an integer with no units and no other explanation.
         """
 
         self.prompt = ChatPromptTemplate.from_messages([

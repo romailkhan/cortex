@@ -29,7 +29,7 @@ class Perception:
         - Important patterns
 
         IMPORTANT: You must respond with ONLY valid JSON. Your entire response must be a single JSON object with exactly this structure:
-        {{
+        {{ # important: you must have these fields to not get parsed incorrectly
             "role": "Perception Specialist",
             "analysis": {{
                 "main_topics": ["topic1", "topic2"],
