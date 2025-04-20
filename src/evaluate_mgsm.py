@@ -104,4 +104,5 @@ def evaluate_mgsm():
     print(f"Total: {total}")
 
 if __name__ == "__main__":
-    evaluate_single_agent()
+    # evaluate_single_agent()
+    evaluate_mgsm()

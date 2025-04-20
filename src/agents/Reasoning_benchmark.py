@@ -1,18 +1,26 @@
 from typing import Dict, List
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 import os
 import re
 
 class Reasoning_Benchmark:
     def __init__(self):
         max_tokens = int(os.getenv("MAX_TOKENS", 4096))
-        openai_model = os.getenv("OPENAI_MODEL", "o4-mini")
 
-        self.llm = ChatOpenAI(
-            model=openai_model,
-            openai_api_key=os.getenv("OPENAI_API_KEY"),
+        temperature = float(os.getenv("TEMPERATURE", 0.6))
+        max_tokens = int(os.getenv("MAX_TOKENS", 128000))
+        top_p = float(os.getenv("TOP_P", 0.95))
+
+        self.llm = ChatGroq(
+            model_name=os.getenv("MODEL"),
+            api_key=os.getenv("GROQ_API_KEY"),
+            temperature=temperature,
             max_tokens=max_tokens,
+            model_kwargs={
+                "top_p": top_p,
+                "max_completion_tokens": max_tokens
+            }
         )
         
         self.system_template = """
